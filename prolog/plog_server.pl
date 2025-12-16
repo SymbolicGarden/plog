@@ -69,7 +69,8 @@ is_dot('..').
 
 
 file_info(File, Size, Modified) :-
-    format(string(Path), "contents/~w", [File]),
+    %format(string(Path), "contents/~w", [File]),
+    absolute_file_name(contents(File), Path, [access(read)]),
     size_file(Path, Size),
     time_file(Path, Modified).
 
@@ -170,7 +171,8 @@ get_blog_display_name(Blog, Path) :-
 
 read_blog_files(Blog, Paragraphs) :-
     retractall(content(_)),
-    format(string(Path), "contents/~w", [Blog]),
+    %format(string(Path), "contents/~w", [Blog]),
+    absolute_file_name(contents(Blog), Path, [access(read)]),
     consult(Path),
     findall(P, content(P), Paragraphs).
 
