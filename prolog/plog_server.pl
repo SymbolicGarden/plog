@@ -1,5 +1,9 @@
+%:- module(plog_server, [
+%    server/1
+%]).
 :- module(plog_server, [
-    server/1
+    server/1,
+    server/2
 ]).
 
 :- dynamic content/1.
@@ -74,8 +78,23 @@ format_timestamp(Stamp, Time) :-
     format_time(string(Time), '%Y-%m-%d %H:%M:%S', DT).
 
 server(Port) :-
+    server(Port, []).
+server(Port, Options) :-
+    set_paths_from_options(Options),
     http_server(http_dispatch, [port(Port)]),
     thread_get_message(never).
+
+set_paths_from_options(Options) :-
+    (   member(content_dir(ContentsDir), Options)
+    ->  retractall(user:file_search_path(contents, _)),
+        asserta(user:file_search_path(contents, ContentsDir))
+    ;   true
+    ),
+    (   member(images_dir(ImagesDir), Options)
+    ->  retractall(user:file_search_path(images, _)),
+        asserta(user:file_search_path(images, ImagesDir))
+    ;   true
+    ).
 
 list_blogs(_Request) :-
     content_files(Files),
