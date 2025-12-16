@@ -32,7 +32,8 @@ http:location(contents, root(contents), []).
 
 :- initialization(plog_set_default_paths).
 plog_set_default_paths :-
-    prolog_load_context(directory, PrologDir),
+    source_file(plog_set_default_paths, ThisFile),
+    file_directory_name(ThisFile, PrologDir),
     directory_file_path(PrologDir, '..', Root0),
     absolute_file_name(Root0, Root),
     directory_file_path(Root, 'images', ImagesDir),
