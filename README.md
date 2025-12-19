@@ -47,7 +47,7 @@ Check the site live: https://blauanarchy.org
 
 ## Getting started
 
-Install or load the pack:
+Install the pack:
 ```
 swipl pack install plog
 ```
@@ -59,7 +59,7 @@ To overwrite the blog tile, description and site link, modify `my_prolog_config.
 ```
 Load the pack, then run the server:
 ```
-use_module(library(plog_server)).
+use_module(library(plog)).
 ```
 
 Run the server
