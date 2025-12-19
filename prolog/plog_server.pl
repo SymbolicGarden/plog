@@ -136,8 +136,6 @@ pack_about -->
         ])
     ])).
 
-
-
 header -->
     html(tr([   th([class(title)], 'Title'), th([class(desc)],  ''), th([class(time)], 'Last Updated At')])).
 

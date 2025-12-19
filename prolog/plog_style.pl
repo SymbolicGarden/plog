@@ -114,9 +114,9 @@ page_style -->
 
             margin-top: 2rem;
             padding-top: 0.9rem;
-            border-top: 1px solid #eee;
+            border-top: 1px solid #f0f0f0;
 
-            max-width: 70ch;
+            max-width: none;
             line-height: 1.45;
         }
 
@@ -139,7 +139,7 @@ page_style -->
             color: #222;
             text-decoration: underline;
             text-underline-offset: 2px;
-            text-decoration-thickness: 2px;
+            text-decoration-thickness: 1px;
         }
 
         #meta a:hover {
