@@ -4,7 +4,7 @@
 
 name(plog).
 title('Dynamic Prolog blog engine with Markdown parser and RSS').
-version('1.0.2').
+version('1.0.3').
 keywords([blog,symbolic,engine,server,web,markdown,parser,rss]).
 author('Zhongying Qiao', 'https://blauanarchy.org/').
 packager('Zhongying Qiao', 'https://github.com/cryptoque').
