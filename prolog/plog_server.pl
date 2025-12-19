@@ -1,6 +1,3 @@
-%:- module(plog_server, [
-%    server/1
-%]).
 :- module(plog_server, [
     server/1,
     server/2
@@ -20,6 +17,7 @@
 :- use_module(plog_markdown).
 :- use_module(plog_style).
 
+
 :- http_handler(root(.), list_blogs, []).
 :- http_handler(root(blogs), list_blog, []).
 :- http_handler(root('rss.xml'), rss_handler, []).
@@ -29,23 +27,20 @@ http:location(images, root(images), []).
 :- multifile http:location/3.
 http:location(contents, root(contents), []).
 
+:- multifile http:location/3.
+http:location(images, root(images), []).
+:- multifile http:location/3.
+http:location(contents, root(contents), []).
+
 :- multifile user:file_search_path/2.
-%user:file_search_path(images, '../images').
-%:- multifile user:file_search_path/2.
-%user:file_search_path(contents, '../contents').
+user:file_search_path(images, 'images').
+:- multifile user:file_search_path/2.
+user:file_search_path(contents, 'contents').
 
-:- initialization(plog_set_default_paths).
-plog_set_default_paths :-
-    source_file(plog_set_default_paths, ThisFile),
-    file_directory_name(ThisFile, PrologDir),
-    directory_file_path(PrologDir, '..', Root0),
-    absolute_file_name(Root0, Root),
-    directory_file_path(Root, 'images', ImagesDir),
-    directory_file_path(Root, 'contents', ContentsDir),
-    asserta(user:file_search_path(images, ImagesDir)),
-    asserta(user:file_search_path(contents, ContentsDir)).
-
-
+:- multifile plog:site_title/1, plog:site_link/1, plog:site_description/1.
+site_title(T) :- (plog:site_title(T) -> true ; T = 'BlauAnarchy\'s Blogs').
+site_link(L)        :- (plog:site_link(L)  -> true ; L = 'https://blauanarchy.org').
+site_description(D) :- (plog:site_description(D) -> true ; D = 'A Blog site on Symbolic Coherence, written in pure prolog.').
 
 :- http_handler(images(.), image_handler, [prefix]).
 :- http_handler(contents(.), content_handler, [prefix]).
@@ -69,7 +64,6 @@ is_dot('..').
 
 
 file_info(File, Size, Modified) :-
-    %format(string(Path), "contents/~w", [File]),
     absolute_file_name(contents(File), Path, [access(read)]),
     size_file(Path, Size),
     time_file(Path, Modified).
@@ -98,29 +92,47 @@ set_paths_from_options(Options) :-
     ).
 
 list_blogs(_Request) :-
+    site_title(Title),
     content_files(Files),
     predsort(compare_by_published_desc, Files, Sorted),
     reply_html_page(
-        title('BlauAnarchy\'s Blogs'),
+        title(Title),
         [ \page_style ],
         [
             div([id(content)], [
-                h1('BlauAnarchy\'s Blogs'),
-                div([id(meta)], [
-                    span('This page was assembled dynamically by a SWI-Prolog server using the http/html_write library.
-                    The system reads Markdown files from the contents/ directory, converts them into structured HTML through a Markdown parser written from scratch, and generates the layout at runtime without templates or external frameworks. '),
-                    a([href('https://github.com/cryptoque/prolog-blog-engine'), target('_blank')], '\nCheck out the source on GitHub')
-                ]),
-
+                h1(Title),
                 table(
                     [
                         \header|
                         \blogs(Sorted)
                     ]
-                )
+                ),
+                \pack_about
             ])
         ]
     ).
+
+pack_about -->
+    html(footer([id(meta)], [
+        p([
+            'Built by ',
+            strong('Zhongying Qiao'),
+            ' using ',
+            code('Plog'),
+            ', an SWI-Prolog blog engine that renders Markdown at request time,',
+            ' in ',
+            strong('Pure Prolog.')
+        ]),
+        p([
+            a([ href('https://github.com/cryptoque/prolog-blog-engine')
+              , target('_blank')
+              , rel('noopener noreferrer')
+              ],
+              'View the source on GitHub')
+        ])
+    ])).
+
+
 
 header -->
     html(tr([   th([class(title)], 'Title'), th([class(desc)],  ''), th([class(time)], 'Last Updated At')])).
@@ -167,18 +179,12 @@ list_blog(Request) :-
 get_blog_display_name(Blog, Path) :-
     re_replace("_" /g , " ", Blog, Path0),
     re_replace(".pl" /g , "", Path0, Path).
-    %string_upper(Path1, Path).
 
 read_blog_files(Blog, Paragraphs) :-
     retractall(content(_)),
-    %format(string(Path), "contents/~w", [Blog]),
     absolute_file_name(contents(Blog), Path, [access(read)]),
     consult(Path),
     findall(P, content(P), Paragraphs).
-
-site_title('BlauAnarchy\'s Blogs').
-site_link('https://blauanarchy.org').
-site_description('A Blog site on Symbolic Coherence, written in pure prolog.').
 
 generate_rss(XML) :-
     site_title(Title),

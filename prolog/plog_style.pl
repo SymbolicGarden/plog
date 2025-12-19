@@ -107,24 +107,41 @@ page_style -->
             font-style: italic;
         }
 
+        /* --- Pack attribution footer --- */
+
         #meta {
             font-family: 'SF Mono','Menlo',monospace;
             font-size: 0.75rem;
             color: #777;
-            margin-bottom: 1.5rem;
-            max-width: 900px;
-            line-height: 1.2;
+
+            margin-top: 2rem;
+            padding-top: 0.9rem;
+            border-top: 1px solid #eee;
+
+            max-width: 70ch;
+            line-height: 1.45;
+        }
+
+        #meta p {
+            margin: 0.35rem 0;
+        }
+
+        #meta strong {
+            font-weight: 600;
+            color: #555;
         }
 
         #meta code {
             background: #f3f3f3;
-            padding: 0 0.15rem;
+            padding: 0 0.2rem;
             border-radius: 3px;
         }
 
         #meta a {
-            color: #444;
+            color: #222;
             text-decoration: underline;
+            text-underline-offset: 2px;
+            text-decoration-thickness: 2px;
         }
 
         #meta a:hover {
