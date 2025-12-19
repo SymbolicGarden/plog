@@ -15,7 +15,6 @@ To add a new blog entry, simply write it in markdown and add it as prolog file t
 
 Check the site live: https://blauanarchy.org 
 
----
 
 ## Features
 
@@ -36,59 +35,51 @@ Check the site live: https://blauanarchy.org
 - Blockquotes
 - Horizontal rules
 
----
 
 ## Getting started
 
-Install the pack:
+- Install the pack:
 ```
 swipl pack install plog
 ```
 
-To overwrite the blog tile, description and site link, modify `my_prolog_config.pl`, and load it into swipl REPL:
+- To overwrite the blog title, description and site link, create `my_prolog_config.pl`, or modify `my_prolog_config.pl` from the installed location:
 
+```
+:- module(my_plog_config, []).
+:- multifile plog:site_title/1, plog:site_link/1, plog:site_description/1.
+
+plog:site_title('BlauAnarchy\'s Blogs'). % Change this with your own blog title
+plog:site_link('https://blauanarchy.org'). % Change this with your own blog link
+plog:site_description('A Blog site on Symbolic Coherence, written in pure prolog.'). % Change this with your own blog description
+```
+
+- To add blog contents, create a contents directory: `contents` and put your blogs files e.g. `my_first_blog.pl` inside. Checkout `contents` folder for examples. The blog files should be written in markdown and look like this:
+
+```
+content("Put your markdown contents here").
+```
+
+- If you would like to add images to your blog markdown, you can create an images folder `images` and drop the files there.
+
+- Load the configuration file, the pack, and run the server:
 ```
 [my_prolog_config].
-```
-Load the pack, then run the server:
-```
 use_module(library(plog)).
-```
-
-Run the server
-```
 server(Port).
 ```
 
-Open the index page, you will see it lists all posts. Each post is served dynamically.
+- Open the index page, you will see it lists all posts. Each post is served dynamically.
 
 ```
 http://localhost:Port
 ```
 
-Writing posts: Add post as a Prolog file in the `contents/` directory:
-
-```
-content("Your markdown content here").
-```
-
-If you want to add images as markdown, add the corresponding images to `/images` directory
-
 That is the entire authoring model.
 
 ## Design philosophy
 
-Plog intentionally avoids abstraction and indirection.
-
-- No template language
-
-- No hidden build step
-
-- No configuration DSL
-
-- No static export pipeline
-
-The goal is to keep the system inspectable, traceable, and understandable to someone who reads Prolog.
+This project intentionally avoids complexity. No abstractions unless justified. Everything is visible and understandable at a glance.
 
 ## Authorship
 
