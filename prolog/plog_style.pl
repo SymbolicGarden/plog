@@ -107,8 +107,6 @@ page_style -->
             font-style: italic;
         }
 
-        /* --- Pack attribution footer --- */
-
         #meta {
             font-family: 'SF Mono','Menlo',monospace;
             font-size: 0.75rem;

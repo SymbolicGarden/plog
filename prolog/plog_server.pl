@@ -1,3 +1,7 @@
+% Copyright © 2025 Zhongying Qiao
+% Licensed under the Apache License 2.0.
+% See the LICENSE file for details or http://www.apache.org/licenses/LICENSE-2.0.
+
 :- module(plog_server, [
     server/1,
     server/2
