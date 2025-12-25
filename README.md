@@ -1,5 +1,7 @@
 # Plog — A Dynamic Prolog Blog Server
 
+This is the source code for the SWI-Prolog package [**Plog**](https://www.swi-prolog.org/pack/list?p=plog).
+
 [![SWI-Prolog](https://img.shields.io/badge/SWI--Prolog-9.x-6B2FBF?logo=prolog&logoColor=white)](https://www.swi-prolog.org/)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
 
